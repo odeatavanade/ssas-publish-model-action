@@ -15,6 +15,7 @@ inputs:
     description: 'Full name of the Analysis Service Instance'
     required: true
   servicePrincipal:
+    description: 'Service principal to use for deployment'
     required: true
   
 # outputs:
