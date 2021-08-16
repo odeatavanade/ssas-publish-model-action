@@ -1,0 +1,24 @@
+name: 'SSAS deploy Model'
+description: 'This actions is made to deploy SSAS Models on Azure'
+author: Me :D
+branding:
+  icon: 'database'  
+  color: 'orange'
+inputs:
+  packagePath:
+    description: 'Path to the package'
+    required: true
+  analysisInstance:
+    description: 'Full name of the Analysis Service Instance'
+    required: true
+  
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        script.ps1
+      shell: pwsh
