@@ -14,6 +14,8 @@ inputs:
   analysisInstance:
     description: 'Full name of the Analysis Service Instance'
     required: true
+  servicePrincipal:
+    required: true
   
 # outputs:
 #   random-number:
@@ -23,5 +25,5 @@ runs:
   using: "composite"
   steps:
     - run: |
-        ${{ github.action_path }}\script.ps1 -PackagePath ${{ inputs.packagePath }} -AnalysisInstance ${{ inputs.analysisInstance }} -ModelName ${{ inputs.modelName }}
+        ${{ github.action_path }}\script.ps1 -PackagePath ${{ inputs.packagePath }} -AnalysisInstance ${{ inputs.analysisInstance }} -ModelName ${{ inputs.modelName }} -ServicePrincipal ${{ inputs.servicePrincipal }}
       shell: powershell
