@@ -17,20 +17,21 @@ Write-Host "Will import $PackagePath to $AnalysisInstance / $ModelName"
 
 $sp = $ServicePrincipal | ConvertFrom-Json
 
-$sp.clientId
-$sp.clientSecret
-$sp.tenantId
+Write-Host "Will deploy as $($sp.clientId) on $($sp.tenantId)"
 
 $secureSecret = ConvertTo-SecureString -String $sp.clientSecret -AsPlainText -Force
-$creds = New-Object PSCredential @($sp.clientId, $secureSecret)
-$environment = $AnalysisInstance.Split('/')[2];
-Add-AzureAnalysisServicesAccount -Credential $creds -ServicePrincipal -TenantId $sp.tenantId -RolloutEnvironment $environment
+$creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList @($sp.clientId, $secureSecret)
+
+$asInstanceName = $AnalysisInstance.Split('/')[2];
+Add-AzureAnalysisServicesAccount -Credential $creds -ServicePrincipal -TenantId $sp.tenantId -RolloutEnvironment $asInstanceName
 
 $model = Get-Content $PackagePath -Encoding UTF8 | ConvertFrom-Json
 $tmsl = '{"createOrReplace":{"object":{"database":"existingModel"},"database":{"name":"emptyModel"}}}' | ConvertFrom-Json
 $tmsl.createOrReplace.object.database = $ModelName
 $tmsl.createOrReplace.database = $Model
 $tmsl = ConvertTo-Json $tmsl -Depth 100 -Compress
+
+Write-Verbose $tmsl
 
 Invoke-ASCmd -Server $Server -Query $tmsl
 # Invoke-ASCmd -Server $AnalysisInstance -Database $ModelName -ApplicationId $sp.clientId -ServicePrincipal -TenantID $sp.tenantId -Credential $creds
