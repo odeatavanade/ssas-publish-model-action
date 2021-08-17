@@ -34,12 +34,12 @@ $tmsl = ConvertTo-Json $tmsl -Depth 100 -Compress
 
 Write-Host $tmsl
 
-Invoke-ASCmd -Server $Server -Query $tmsl
+Invoke-ASCmd -Server $AnalysisInstance -Query $tmsl
 # Invoke-ASCmd -Server $AnalysisInstance -Database $ModelName -ApplicationId $sp.clientId -ServicePrincipal -TenantID $sp.tenantId -Credential $creds
 
 if($PostDeploymentScripts -and (![string]::IsNullOrEmpty($PostDeploymentScripts))){
     $PostDeploymentScripts.Split(",") | ForEach-Object {
         Write-Host "Running post deployment script $_"
-        Invoke-ASCmd -Server $Server -Query (Get-Content $_ -Encoding UTF8)
+        Invoke-ASCmd -Server $AnalysisInstance -Query (Get-Content $_ -Encoding UTF8)
     }
 }
