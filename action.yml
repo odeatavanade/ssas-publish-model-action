@@ -17,7 +17,10 @@ inputs:
   servicePrincipal:
     description: 'Service principal to use for deployment'
     required: true
-  
+  postDeploymentScripts:
+    description: 'Scripts to run after the cube has been deployed'
+    required: false
+    default: ''
 # outputs:
 #   random-number:
 #     description: "Random number"
@@ -26,5 +29,5 @@ runs:
   using: "composite"
   steps:
     - run: |
-        ${{ github.action_path }}\script.ps1 -PackagePath '${{ inputs.packagePath }}' -AnalysisInstance '${{ inputs.analysisInstance }}' -ModelName '${{ inputs.modelName }}' -ServicePrincipal '${{ inputs.servicePrincipal }}'
+        ${{ github.action_path }}\script.ps1 -PackagePath '${{ inputs.packagePath }}' -AnalysisInstance '${{ inputs.analysisInstance }}' -ModelName '${{ inputs.modelName }}' -ServicePrincipal '${{ inputs.servicePrincipal }}' -PostDeploymentScripts '${{ inputs.postDeploymentScripts }}'
       shell: powershell

@@ -3,7 +3,8 @@ param(
     [string] $PackagePath,
     [string] $AnalysisInstance,
     [string] $ModelName,
-    [string] $ServicePrincipal
+    [string] $ServicePrincipal,
+    [string] $PostDeploymentScripts
 )
 
 Write-Host "Hello from my action"
@@ -31,7 +32,14 @@ $tmsl.createOrReplace.object.database = $ModelName
 $tmsl.createOrReplace.database = $Model
 $tmsl = ConvertTo-Json $tmsl -Depth 100 -Compress
 
-Write-Verbose $tmsl
+Write-Host $tmsl
 
 Invoke-ASCmd -Server $Server -Query $tmsl
 # Invoke-ASCmd -Server $AnalysisInstance -Database $ModelName -ApplicationId $sp.clientId -ServicePrincipal -TenantID $sp.tenantId -Credential $creds
+
+if($PostDeploymentScripts -and (![string]::IsNullOrEmpty($PostDeploymentScripts))){
+    $PostDeploymentScripts.Split(",") | ForEach-Object {
+        Write-Host "Running post deployment script $_"
+        Invoke-ASCmd -Server $Server -Query (Get-Content $_ -Encoding UTF8)
+    }
+}
