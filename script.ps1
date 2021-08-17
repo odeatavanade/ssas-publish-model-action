@@ -1,5 +1,15 @@
-function Invoke-AsCmdInternal{
+
 [CmdletBinding()]
+param(
+    [string] $PackagePath,
+    [string] $AnalysisInstance,
+    [string] $ModelName,
+    [string] $ServicePrincipal,
+    [string] $PostDeploymentScripts
+)
+
+function Invoke-AsCmdInternal{
+    [CmdletBinding()]
     param(
         [string] $Server,
         [string] $Query
@@ -9,14 +19,6 @@ function Invoke-AsCmdInternal{
 
     Invoke-ASCmd -Server $Server -Query $Query -Verbose
 }
-[CmdletBinding()]
-param(
-    [string] $PackagePath,
-    [string] $AnalysisInstance,
-    [string] $ModelName,
-    [string] $ServicePrincipal,
-    [string] $PostDeploymentScripts
-)
 
 Write-Host "Hello from my action"
 
