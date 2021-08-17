@@ -40,6 +40,7 @@ Invoke-ASCmd -Server $AnalysisInstance -Query $tmsl
 if($PostDeploymentScripts -and (![string]::IsNullOrEmpty($PostDeploymentScripts))){
     $PostDeploymentScripts.Split(",") | ForEach-Object {
         Write-Host "Running post deployment script $_"
-        Invoke-ASCmd -Server $AnalysisInstance -Query (Get-Content $_ -Encoding UTF8)
+        $tmsl = Get-Content $_ -Encoding UTF8
+        Invoke-ASCmd -Server $AnalysisInstance -Query $tmsl
     }
 }
