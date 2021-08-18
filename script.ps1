@@ -15,7 +15,7 @@ function Invoke-AsCmdInternal{
         [string] $Query
     )
 
-    Write-Host $Query
+    # Write-Host $Query
 
     Invoke-ASCmd -Server $Server -Query $Query -Verbose
 }
